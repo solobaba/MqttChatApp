@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
     List<ChatModel> list_chat = new ArrayList<>();
 
     // connection default values
-    private static final String BROKER_URI = "tcp://iot.eclipse.org:1883";
+    private static final String BROKER_URI = "tcp://broker.hivemq.com:1883";
     private static final String TOPIC = "mqttdemo";
     private static final int QOS = 2;
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
         textMessage = findViewById(R.id.message);
 
         // when the activity is created call to connect to the broker
-        //connect();
+        connect();
     }
 
     private void connect(){
@@ -78,12 +78,14 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
 
                 @Override
                 public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-                    Toast.makeText(MainActivity.this, "Unavailable chat, cause: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Unavailable chat, cause: " +
+                            throwable.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             });
         } catch (MqttException e){
-            Toast.makeText(this, "ERROR, client not connected to broker in " + BROKER_URI, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "ERROR, client not connected to broker in " +
+                    BROKER_URI, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 ChatModel chatModel = new ChatModel(message, true);
                 list_chat.add(chatModel);
 
-                CustomAdapter adapter = new CustomAdapter(chatModel, getApplicationContext());
+                CustomAdapter adapter = new CustomAdapter(list_chat, getApplicationContext());
                 listView.setAdapter(adapter);
 
                 // we only publish if there is message to publish
@@ -115,12 +117,13 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
 
                             @Override
                             public void onSuccess(IMqttToken iMqttToken) {
-                                //Toast.makeText(MainActivity.this, "message sent", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-                                Toast.makeText(MainActivity.this, "Failed on publish, cause: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, "Failed on publish, cause: " +
+                                        throwable.getMessage(), Toast.LENGTH_LONG).show();
                             }
 
                         });
@@ -140,12 +143,13 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
 
                 @Override
                 public void onSuccess(IMqttToken iMqttToken) {
-                    //Toast.makeText(MainActivity.this, "Subscribed to:" + TOPIC, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Subscribed to:" + TOPIC, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-                    Toast.makeText(MainActivity.this, "Failed on subscribe, cause: " + throwable, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Failed on subscribe, cause: " +
+                            throwable, Toast.LENGTH_LONG).show();
                 }
 
             });

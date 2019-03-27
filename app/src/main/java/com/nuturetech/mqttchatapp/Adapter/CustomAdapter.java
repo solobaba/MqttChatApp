@@ -18,8 +18,8 @@ public class CustomAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public CustomAdapter(ChatModel list_chat_models, Context context) {
-        this.list_chat_models = (List<ChatModel>) list_chat_models;
+    public CustomAdapter(List<ChatModel> list_chat_models, Context context) {
+        this.list_chat_models = list_chat_models;
         this.context = context;
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
